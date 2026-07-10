@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/AppServer/">
+    <Project Path="AppServer/Entities/Entities.csproj" />
+    <Project Path="AppServer/RepositoryContracts/RepositoryContracts.csproj" />
+    <Project Path="AppServer/WebAPI/WebAPI.csproj" />
+  </Folder>
+  <Folder Name="/BlazorClient/" />
+</Solution>
