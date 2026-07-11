@@ -4,7 +4,9 @@
     <Project Path="AppServer/RepositoryContracts/RepositoryContracts.csproj" />
     <Project Path="AppServer/WebAPI/WebAPI.csproj" />
   </Folder>
-  <Folder Name="/BlazorClient/" />
+  <Folder Name="/BlazorClient/">
+    <Project Path="BlazorClient/BlazorApp/BlazorApp.csproj" />
+  </Folder>
   <Folder Name="/Shared/">
     <Project Path="Shared/DTOs/DTOs.csproj" />
     <Project Path="Shared/Entities/Entities.csproj" />
