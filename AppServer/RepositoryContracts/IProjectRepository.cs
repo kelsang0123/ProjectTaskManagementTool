@@ -8,5 +8,5 @@ public interface IProjectRepository
   Task UpdateAsync(Project project);
   Task DeleteAsync(int id);
   Task<Project> GetSingleAsync(int id);
-  IQueryable<Project> GetManyAsync();
+  IQueryable<Project> GetMany();
 }

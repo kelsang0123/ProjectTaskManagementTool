@@ -13,6 +13,15 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="GlobalExceptionHandler\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\DTOs\DTOs.csproj" />
+    <ProjectReference Include="..\..\Shared\Entities\Entities.csproj" />
+    <ProjectReference Include="..\Entities\Entities.csproj" />
+    <ProjectReference Include="..\FileRepositories\FileRepositories.csproj" />
+    <ProjectReference Include="..\RepositoryContracts\RepositoryContracts.csproj" />
   </ItemGroup>
 
 </Project>
