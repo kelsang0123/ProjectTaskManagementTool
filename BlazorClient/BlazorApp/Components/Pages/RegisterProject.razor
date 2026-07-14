@@ -1,10 +1,47 @@
 ﻿@page "/registerProject"
 @rendermode InteractiveServer
+@inject IProjectService projectService
+@inject NavigationManager navMgr
 
 <PageTitle>Project registration</PageTitle>
-<h3>Register a new project</h3>
 
+<div>
+  <h3>Register a new project</h3>
+  <br />
+  <div id="form">
+  <div>
+     <label>Title: </label>
+     <input type="text" @bind="title"/>
+</div>
+<br />
+<div>
+    <label>Description:</label>
+    <textarea @bind="description"></textarea>
+</div>
+<span>@message</span>
+<br />
+<button @onclick="RegisterAProject">Register</button>
+</div>
+</div>
 
 @code {
+    private string title = string.Empty;
+    private string description = string.Empty;
+    
+    private string message = string.Empty;
+    private async Task RegisterAProject()
+    {
+        try
+        {
+            CreateProjectDto dto = new(title, description);
+            await projectService.AddProjectAsync(dto);
+            message = "Registered successfully!";
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e);
+            message = e.Message;
+        }
+    }
 
 }

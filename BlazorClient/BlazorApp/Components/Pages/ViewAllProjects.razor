@@ -1,0 +1,35 @@
+﻿@page "/viewAllProjects"
+@rendermode InteractiveServer
+@inject IProjectService projectService
+
+<PageTitle>Project list</PageTitle>
+<div class="container mt-4">
+<h3>Projects</h3>
+<div class="row">
+    @foreach (var project in projects)
+    {
+        <div class="col-md-4 mb-4">
+
+            <div class="card project-card shadow">
+
+    <div class="card-body">
+        <h5 class="card-title">Title: @project.Title</h5>
+        <p class="card-text">Description: @project.Description</p>
+        <p class="card-text">Status: @project.Status</p>
+        <p class="card-text">Created At: @project.CreatedAt</p>
+    </div>
+    </div>
+    </div>
+    }    
+</div>
+</div>
+
+@code {
+    private ICollection<ProjectDto> projects = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+       projects = await projectService.GetProjectsAsync();
+    }
+
+}

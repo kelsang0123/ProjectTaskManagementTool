@@ -2,13 +2,16 @@ namespace Entities;
 
 public class Project
 {
-
-    public Project(string title, string description, string status, DateTime createdAt)
+    public Project()
+    {
+        
+    }
+     public Project(string title, string description, string status, DateTime createdAt)
     {
         Title = title;
         Description = description;
         Status = status;
-        CreatedAt = createdAt;
+        CreatedAt = createdAt;  //all parameters name should be similar to its properties
     }
 
     public int Id{get; set;}
@@ -16,6 +19,4 @@ public class Project
     public string Description{get; set;}
     public string Status{get; set;}
     public DateTime CreatedAt{get; set;}
-
-    private Project(){}
 }

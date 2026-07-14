@@ -2,6 +2,11 @@ namespace DTOs;
 
 public class CreateProjectDto
 {
-    public required string Title{get; set;}
-    public required string Description{get; set;}
+    public CreateProjectDto(string title, string description)
+    {
+        this.Title = title;
+        this.Description = description;
+    }
+    public string Title{get; set;}
+    public string Description{get; set;}
    }

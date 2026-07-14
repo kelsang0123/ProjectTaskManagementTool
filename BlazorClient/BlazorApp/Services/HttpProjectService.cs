@@ -14,11 +14,13 @@ public HttpProjectService(HttpClient client)
 
     public async Task<ProjectDto> AddProjectAsync(CreateProjectDto request)
     {
-        HttpResponseMessage httpResponse = await client.PostAsJsonAsync("projects", request);
+        HttpResponseMessage httpResponse = await client.PostAsJsonAsync("/api/projects/createProject", request);
         string response = await httpResponse.Content.ReadAsStringAsync();
         if(!httpResponse.IsSuccessStatusCode)
         {
-            throw new Exception(response);
+            throw new Exception(
+                $"Status: {(int)httpResponse.StatusCode} ({httpResponse.StatusCode})\n" +
+                response);
         }
         return JsonSerializer.Deserialize<ProjectDto>(response, new JsonSerializerOptions
         {
@@ -28,7 +30,7 @@ public HttpProjectService(HttpClient client)
 
     public async Task DeleteProjectAsync(int id)
     {
-        HttpResponseMessage httpResponse = await client.DeleteAsync("$projects/{id}");
+        HttpResponseMessage httpResponse = await client.DeleteAsync($"/api/projects/{id}/deleteProject");
         string response = await httpResponse.Content.ReadAsStringAsync();
         if(!httpResponse.IsSuccessStatusCode)
         {
@@ -38,7 +40,7 @@ public HttpProjectService(HttpClient client)
 
     public async Task<ICollection<ProjectDto>> GetProjectsAsync()
     {
-        HttpResponseMessage response = await client.GetAsync("projects");
+        HttpResponseMessage response = await client.GetAsync("/api/projects/manyProjects");
         string content = await response.Content.ReadAsStringAsync();
 
         if(!response.IsSuccessStatusCode)
