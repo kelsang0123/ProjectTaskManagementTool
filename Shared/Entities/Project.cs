@@ -6,11 +6,12 @@ public class Project
     {
         
     }
-     public Project(string title, string description, string status, DateTime createdAt)
+     public Project(string title, string description, string status, int creatorId, DateTime createdAt)
     {
         Title = title;
         Description = description;
         Status = status;
+        CreatorId = creatorId;
         CreatedAt = createdAt;  //all parameters name should be similar to its properties
     }
 
@@ -18,5 +19,6 @@ public class Project
     public string Title{get; set;}
     public string Description{get; set;}
     public string Status{get; set;}
+    public int CreatorId{get; set;}
     public DateTime CreatedAt{get; set;}
 }

@@ -1,0 +1,50 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+option java_multiple_files = true;
+
+package dk.via.re_sep3.mainbackendserver;
+
+message DTOProject
+{
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  string status = 4;
+  int32 creatorId = 5;
+  google.protobuf.Timestamp createdAt = 6;
+}
+
+message RegisterProjectRequest {
+  string title = 1;
+  string description = 2;
+  int32 creatorId = 3;
+}
+
+message RegisterProjectResponse {
+  DTOProject project = 1;
+}
+
+message GetProjectRequest
+{
+  int32 id = 1;
+}
+
+message GetProjectResponse
+{
+   DTOProject project = 1;
+}
+
+message GetProjectsRequest
+{}
+
+message GetProjectsResponse
+{
+  repeated DTOProject projects = 1;
+}
+
+service ProjectService
+{
+  rpc RegisterProject (RegisterProjectRequest) returns (RegisterProjectResponse);
+  rpc getProject ( GetProjectRequest ) returns ( GetProjectResponse );
+  rpc getProjects ( GetProjectsRequest ) returns ( GetProjectsResponse );
+}

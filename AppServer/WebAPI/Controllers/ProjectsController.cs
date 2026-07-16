@@ -3,6 +3,8 @@ using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
+using WebAPI.gRPC;
+using WebAPI.gRPC.Interfaces;
 
 namespace WebAPI.Controllers
 {
@@ -10,73 +12,52 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     public class ProjectsController : ControllerBase
     {
-        private readonly IProjectRepository projectRepo;
+      //  private readonly IProjectRepository projectRepo;
+      private readonly IProjectService projectService;
 
-        public ProjectsController(IProjectRepository projectRepo)
+        public ProjectsController(IProjectService projectService)
         {
-            this.projectRepo = projectRepo;
+            this.projectService = projectService;
         }
+
 
         [HttpPost("createProject")]
         public async Task<ActionResult<ProjectDto>> AddProject([FromBody] CreateProjectDto request)
         {
-            await VerifyProjectTitleIsAvailable(request.Title);
-            DateTime dateTime = DateTime.Now;
-            Project project = new(request.Title, request.Description, "Not Started", dateTime);
-            Project created = await projectRepo.AddAsync(project);
-            ProjectDto dto = new()
+            try
             {
-                Id = created.Id,
-                Title = created.Title,
-                Description = created.Description,
-                Status = "Not Started",
-                CreatedAt = dateTime
-            };
-            return Created($"/projects/{dto.Id}", created);
-        }
+                ProjectDto created = await projectService.CreateProject(request);
 
-        private async Task VerifyProjectTitleIsAvailable(string title)
-        {
-            List<Project> projects = projectRepo.GetMany().AsQueryable().ToList();
-            Project? existingProject = projects.SingleOrDefault(p=>p.Title.Equals(title));
-            if(existingProject!=null)
+                return Created(
+                    $"/projects/{created.Id}", created
+                );
+            }
+            catch(Exception ex)
             {
-                throw new KeyNotFoundException("Title already exists!");
+                return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ProjectDto>> GetProject(
+        [FromRoute] int id)
+       {
+        ProjectDto? project =
+            await projectService.GetById(id);
+
+        if(project == null)
+        {
+            return NotFound();
+        }
+        return Ok(project);
+    }
 
         [HttpGet("manyProjects")]
-        public async Task<IResult> GetProjects(
-            [FromQuery] string? status = null,
-            [FromQuery] int? projectId = null
-        )
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjects()
         {
-            IQueryable<Project> queryableProjects = projectRepo.GetMany();
-            if(status!=null)
-            {
-                queryableProjects = queryableProjects.Where(p=>p.Status.Contains(status));
-            }
-            if(projectId != null)
-            {
-                queryableProjects = queryableProjects.Where(p=>p.Id == projectId);
-            }
-            List<ProjectDto> projects = queryableProjects.Select(project => new ProjectDto
-            {
-                Id = project.Id,
-                Title = project.Title,
-                Description = project.Description,
-                Status = project.Status,
-                CreatedAt = project.CreatedAt
-            })
-            .ToList();
-            return Results.Ok(projects);
+            IEnumerable<ProjectDto> projects = await projectService.GetMany();
+            return Ok(projects);
         }
 
-        [HttpDelete("{projectId:int}/deleteProject")]
-        public async Task<ActionResult> DeleteProject([FromRoute] int projectId)
-        {
-            await projectRepo.DeleteAsync(projectId);
-            return NoContent();
-        }
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MainBackendServer/MainBackendServer.iml" filepath="$PROJECT_DIR$/MainBackendServer/MainBackendServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ProjectTaskManagementTool.iml" filepath="$PROJECT_DIR$/.idea/ProjectTaskManagementTool.iml" />
+    </modules>
+  </component>
+</project>

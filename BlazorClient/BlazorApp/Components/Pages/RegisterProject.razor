@@ -27,13 +27,14 @@
 @code {
     private string title = string.Empty;
     private string description = string.Empty;
+    private int creatorId = 0;
     
     private string message = string.Empty;
     private async Task RegisterAProject()
     {
         try
         {
-            CreateProjectDto dto = new(title, description);
+            CreateProjectDto dto = new(title, description, creatorId);
             await projectService.AddProjectAsync(dto);
             message = "Registered successfully!";
         }

@@ -1,6 +1,9 @@
 using FileRepositories;
 using RepositoryContracts;
 using WebAPI.GlobalExceptionHandler;
+using WebAPI.gRPC;
+using WebAPI.gRPC.Interfaces;
+using WebAPI.gRPC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +15,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
-builder.Services.AddScoped<IProjectRepository, ProjectFileRepository>();
-
+//builder.Services.AddScoped<IProjectRepository, ProjectFileRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddSingleton<ProjectGrpcClient>();
 
 var app = builder.Build();
 
