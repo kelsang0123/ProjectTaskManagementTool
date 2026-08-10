@@ -1,7 +1,54 @@
 ﻿@page "/"
+@inject NavigationManager NavMgr
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<h1>Project Management System</h1>
+
+<AuthorizeView>
+    <Authorized>
+        <h3>Welcome, @context.User.Identity?.Name</h3>
+
+      <p>
+        User ID:
+        @context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+      </p>
+
+      <p>
+        Email:
+        @context.User.FindFirst(ClaimTypes.Email)?.Value
+      </p>
+    </Authorized>
+    
+    <NotAuthorized>
+        <h1>Welcome</h1>
+        <p>To proceed this app, Please login first!</p>
+        <button @onclick='() => NavMgr.NavigateTo("/login")'>go to login</button>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code{
+    [CascadingParameter] public Task<AuthenticationState> State {get; set;} = default!;
+    private int userId;  
+
+        protected override async Task OnInitializedAsync()
+        {
+            AuthenticationState authenticationState = await State;
+            ClaimsPrincipal claimsPrincipal = authenticationState.User;
+            if(claimsPrincipal.Identity is null || !claimsPrincipal.Identity.IsAuthenticated)
+            {
+                //the user is not logged in
+                return;
+            }
+            string? email = claimsPrincipal.Identity?.Name;
+            IEnumerable<Claim> claims = claimsPrincipal.Claims;
+                String? userIdAsString = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(string.IsNullOrEmpty(userIdAsString))
+                {
+                    return;
+                }
+                userId = int.Parse(userIdAsString);
+        }
+}

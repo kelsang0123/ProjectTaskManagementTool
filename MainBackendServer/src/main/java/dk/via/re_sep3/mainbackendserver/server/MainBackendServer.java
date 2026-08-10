@@ -8,6 +8,7 @@ import dk.via.re_sep3.mainbackendserver.utility.JPAUtil;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 import java.io.IOException;
@@ -29,9 +30,9 @@ public class MainBackendServer
   {
     int port = 7891;
 
-    EntityManager entityManager = JPAUtil.getEntityManager();
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("projectPU");
 
-    ProjectRepository projectRepo = new ProjectRepositoryImpl(entityManager);
+    ProjectRepository projectRepo = new ProjectRepositoryImpl(emf);
 
     DTOFactory dtoFactory =
         new DTOFactory();
@@ -48,7 +49,7 @@ public class MainBackendServer
         .build()
         .start();
 
-    System.out.println("Main server started on port" + port);
+    System.out.println("Main server started on port " + port);
 
     Runtime.getRuntime()
         .addShutdownHook(

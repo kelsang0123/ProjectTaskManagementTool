@@ -1,6 +1,6 @@
 ﻿@page "/viewAllProjects"
-@rendermode InteractiveServer
 @inject IProjectService projectService
+@attribute [Authorize]
 
 <PageTitle>Project list</PageTitle>
 <div class="container mt-4">

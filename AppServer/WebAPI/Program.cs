@@ -4,6 +4,7 @@ using WebAPI.GlobalExceptionHandler;
 using WebAPI.gRPC;
 using WebAPI.gRPC.Interfaces;
 using WebAPI.gRPC.Services;
+using WebAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 //builder.Services.AddScoped<IProjectRepository, ProjectFileRepository>();
+builder.Services.AddScoped<IUserRepository, UserFileRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddSingleton<ProjectGrpcClient>();
 

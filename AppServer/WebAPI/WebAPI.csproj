@@ -14,7 +14,9 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.28" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.22.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.22.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +24,10 @@
     <Folder Include="GlobalExceptionHandler\" />
     <Folder Include="gRPC\Interfaces\" />
     <Folder Include="gRPC\Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Services\IAuthService.cs" />
   </ItemGroup>
 
   <ItemGroup>

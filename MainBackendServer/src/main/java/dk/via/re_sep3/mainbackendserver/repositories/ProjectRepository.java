@@ -6,6 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ProjectRepository
-{  List<Project> getProjects() throws SQLException;
+{  List<Project> getProjects();
   Project registerProject(String title, String description, int creatorId);
 }

@@ -4,6 +4,7 @@ import com.google.protobuf.Timestamp;
 import com.google.type.DateTime;
 import dk.via.re_sep3.mainbackendserver.domain.Project;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 
 import java.sql.SQLException;
@@ -12,16 +13,22 @@ import java.util.List;
 
 public class ProjectRepositoryImpl implements ProjectRepository
 {
-  private final EntityManager entityManager;
+  private final EntityManagerFactory entityManagerFactory;
 
-  public ProjectRepositoryImpl(EntityManager entityManager)
+  public ProjectRepositoryImpl(EntityManagerFactory entityManagerFactory)
   {
-    this.entityManager = entityManager;
+    this.entityManagerFactory = entityManagerFactory;
   }
 
   @Override
   public Project registerProject(String title, String description, int creatorId)
   {
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+    EntityTransaction transaction = entityManager.getTransaction();
+    try{
+      transaction.begin();
+
     Project project = new Project();
     project.setTitle(title);
     project.setDescription(description);
@@ -29,17 +36,11 @@ public class ProjectRepositoryImpl implements ProjectRepository
     project.setCreatorId(creatorId);
     project.setCreatedAt(Instant.now());
 
-    EntityTransaction transaction = entityManager.getTransaction();
+    entityManager.persist(project);
 
-    try
-    {
-      transaction.begin();
+    transaction.commit();
 
-      entityManager.persist(project);
-
-      transaction.commit();
-
-      return project;
+    return project;
     }
     catch (RuntimeException e)
     {
@@ -48,16 +49,24 @@ public class ProjectRepositoryImpl implements ProjectRepository
       }
       throw e;
     }
+    finally
+    {
+      entityManager.close();
+    }
   }
 
   @Override
-  public List<Project> getProjects() throws SQLException
+  public List<Project> getProjects()
   {
-    return entityManager
-        .createQuery(
-            "SELECT p FROM Project p",
-            Project.class
-        )
-        .getResultList();
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    try
+    {
+      return entityManager.createQuery("SELECT p FROM Project p", Project.class)
+          .getResultList();
+    }
+    finally
+    {
+      entityManager.close();
+    }
   }
 }

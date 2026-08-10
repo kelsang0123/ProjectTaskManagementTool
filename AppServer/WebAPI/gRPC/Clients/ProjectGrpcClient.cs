@@ -13,7 +13,7 @@ public class ProjectGrpcClient
     {
         var channel = 
         GrpcChannel.ForAddress(
-            "http://localhost:7891"
+            "http://localhost:7891/"
         );
 
         client = new ProjectService.ProjectServiceClient(channel);
@@ -64,7 +64,8 @@ public class ProjectGrpcClient
 
      public async Task<IEnumerable<ProjectDto>> GetProjects()
     {
-
+       try
+       {
         var request = new GetProjectsRequest();
 
 
@@ -75,6 +76,15 @@ public class ProjectGrpcClient
         return response.Projects
             .Select(MapToProjectDTO)
             .ToList();
+    }
+    catch(Grpc.Core.RpcException ex)
+        {
+            Console.WriteLine($"gRPC error: {ex.StatusCode}");
+            Console.WriteLine($"gRPC detail: {ex.Status.Detail}");
+            Console.WriteLine($"gRPC debug: {ex}");
+
+            throw;
+        }
     }
 
     private ProjectDto MapToProjectDTO(DTOProject project)

@@ -21,4 +21,6 @@ public class Project
     public string Status{get; set;}
     public int CreatorId{get; set;}
     public DateTime CreatedAt{get; set;}
+    public User User{get; set;}
+    public List<ProjectMember> Members{get; set;}
 }
