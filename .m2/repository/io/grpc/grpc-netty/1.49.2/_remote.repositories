@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Jul 16 21:56:37 CEST 2026
+grpc-netty-1.49.2-sources.jar>central=
+grpc-netty-1.49.2.jar>central=
+grpc-netty-1.49.2.pom>central=

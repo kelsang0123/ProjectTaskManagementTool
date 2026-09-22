@@ -1,0 +1,51 @@
+name: project_task_management
+
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:18.4-alpine
+    container_name: project_task_management_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - project_task_management-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d project_task_managementdb" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Spring Boot backend Service
+  main-backend-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: project_task_management_backend_service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "7891:7891"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - project_task_management-network
+  
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  project_task_management-network:
+    driver: bridge

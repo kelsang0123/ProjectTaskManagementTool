@@ -32,7 +32,8 @@ class ProjectRepositoryImplTest
         .createEntityManagerFactory("testProjectPU");
 
     entityManager = emf.createEntityManager();
-    repository = new ProjectRepositoryImpl(entityManager);
+    repository = new ProjectRepositoryImpl(
+        entityManager.getEntityManagerFactory());
 
     entityManager.getTransaction().begin();
     entityManager.createQuery("DELETE FROM Project").executeUpdate();
@@ -223,20 +224,6 @@ class ProjectRepositoryImplTest
   @Test
   void registerProject_PathSuccessfulTransaction()
   {
-        /*
-        Path:
-
-        begin()
-          |
-        persist()
-          |
-        commit()
-          |
-        return project
-
-        */
-
-
     Project project =
         repository.registerProject(
             "WhiteBox",
@@ -247,9 +234,10 @@ class ProjectRepositoryImplTest
 
     assertNotNull(project);
 
-    assertTrue(
-        entityManager.contains(project)
-    );
+    assertEquals("WhiteBox", project.getTitle());
+    assertEquals("Success", project.getDescription());
+    assertEquals(1, project.getCreatorId());
+    assertEquals("Not Started", project.getStatus());
   }
 
 
@@ -330,35 +318,20 @@ class ProjectRepositoryImplTest
     );
   }
 
-
-
-
-
   @Test
   void registerProject_PathExceptionRollback()
   {
-
-        /*
-        Exception path:
-
-        begin()
-          |
-        persist()
-          |
-        exception
-          |
-        rollback()
-          |
-        throw exception
-
-        */
-
+    EntityManagerFactory mockEntityManagerFactory =
+        mock(EntityManagerFactory.class);
 
     EntityManager mockEntityManager =
-          mock(EntityManager.class);
+        mock(EntityManager.class);
 
     EntityTransaction transaction =
         mock(EntityTransaction.class);
+
+    when(mockEntityManagerFactory.createEntityManager())
+        .thenReturn(mockEntityManager);
 
     when(mockEntityManager.getTransaction())
         .thenReturn(transaction);
@@ -371,7 +344,7 @@ class ProjectRepositoryImplTest
         .persist(any(Project.class));
 
     ProjectRepositoryImpl repository =
-        new ProjectRepositoryImpl(mockEntityManager);
+        new ProjectRepositoryImpl(mockEntityManagerFactory);
 
     assertThrows(
         RuntimeException.class,
@@ -382,6 +355,7 @@ class ProjectRepositoryImplTest
                 1
             )
     );
+
     verify(transaction)
         .begin();
 
@@ -390,5 +364,9 @@ class ProjectRepositoryImplTest
 
     verify(transaction)
         .rollback();
+
+    verify(mockEntityManager)
+        .close();
   }
+
 }
