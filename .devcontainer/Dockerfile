@@ -14,7 +14,8 @@ RUN apk add --no-cache \
     docker-cli-buildx \
     docker-cli-compose \
     openjdk21-jdk \
-    dotnet9-sdk
+    dotnet9-sdk \
+    github-cli
 
 
 # Create a user for non-root work inside the container. That way files
