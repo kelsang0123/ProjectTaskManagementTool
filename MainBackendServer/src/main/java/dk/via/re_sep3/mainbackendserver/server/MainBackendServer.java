@@ -28,7 +28,7 @@ public class MainBackendServer
 
   private void start() throws IOException
   {
-    int port = 7891;
+    int port = 7892;
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("projectPU");
 

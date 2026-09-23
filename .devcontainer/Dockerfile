@@ -14,7 +14,7 @@ RUN apk add --no-cache \
     docker-cli-buildx \
     docker-cli-compose \
     openjdk21-jdk \
-    dotnet9-sdk \
+    dotnet8-sdk \
     github-cli
 
 

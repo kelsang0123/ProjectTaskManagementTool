@@ -13,7 +13,7 @@ public class ProjectGrpcClient
     {
         var channel = 
         GrpcChannel.ForAddress(
-            "http://localhost:7891/"
+            "http://localhost:7892/"
         );
 
         client = new ProjectService.ProjectServiceClient(channel);
