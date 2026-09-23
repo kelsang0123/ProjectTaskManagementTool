@@ -12,19 +12,19 @@ This system contains features as follows:
 6. Assign a task to any other project member.
 7. Add any user in the system to project as a project member.
 
-B. Technology:
-This project follows distributed system approaches where the developer implemented SCRUM framework for agile/iterative and Unified Process SDLC methodology.
+B. Technologies:
+This project follows distributed system approaches where the SCRUM framework is implemented to exercise on agile/iterative and Unified Process SDLC methodology.
 
 Front-end stack:
-a. Blazor
+ Blazor, a modern front-end web framework.
 
 App Server/Back-end stack:
-a. C#/.NET programming
+ C#/.NET programming
 
 Main Backend Server:
-a. Java
-b. Maven as a project management tool for backend java project.
-c. JPA/Jakarta Persistence
-d. Hibernate framework
-e. Postgresql Database
+ Java
+ Maven as a project management tool for backend java project.
+ JPA/Jakarta Persistence
+ Hibernate framework
+ Postgresql Database
 
