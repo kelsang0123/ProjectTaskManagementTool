@@ -1,6 +1,6 @@
 Project Task Management Tool
 
-The Project Task Management Tool is a simple and easy-to-use web application which is build, particularly to focus on solving project and task management issues at the same time implementing distributed systems approach learned from 3rd Semester courses.
+The Project Task Management Tool is a simple and easy-to-use web application which is build, particularly to focus on solving project and task management issues at the same time implementing distributed systems approaches learned from 3rd Semester courses.
 
 A. Features:
 This system contains features as follows:
