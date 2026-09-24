@@ -22,9 +22,9 @@ App Server/Back-end stack:
  C#/.NET programming
 
 Main Backend Server:
- Java
- Maven as a project management tool for backend java project.
- JPA/Jakarta Persistence
- Hibernate framework
+ Java,
+ Maven as a project management tool for backend java project,
+ JPA/Jakarta Persistence,
+ Hibernate framework,
  Postgresql Database
 
