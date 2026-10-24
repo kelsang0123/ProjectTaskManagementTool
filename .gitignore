@@ -1,4 +1,7 @@
 #Build output
 bin/
 obj/
-.env/
+
+### Gitignore file ###
+.env
+.env.backup
