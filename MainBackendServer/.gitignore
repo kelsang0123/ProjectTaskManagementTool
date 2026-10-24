@@ -14,7 +14,8 @@ target/
 *.ipr
 
 ### environment file ###
-.env/
+.env
+.env.backup
 
 ### Eclipse ###
 .apt_generated
