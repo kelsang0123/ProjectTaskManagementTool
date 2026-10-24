@@ -17,10 +17,10 @@
                       value="jdbc:postgresql://localhost:5432/postgres"/>
 
             <property name="jakarta.persistence.jdbc.user"
-                      value="postgres"/>
+                      value=" ${POSTGRES_USER}"/>
 
             <property name="jakarta.persistence.jdbc.password"
-                      value="kelsang123"/>
+                      value=" ${POSTGRES_PASSWORD}"/>
 
             <property name="hibernate.hbm2ddl.auto"
                       value="update"/>
