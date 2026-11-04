@@ -11,13 +11,13 @@ This system contains features as follows:
 5. set or change their project status to either 'Started', 'In Progress', 'Completed'.
 6. set or change project title and description.
 7. Click one project from the project list to view selected project details briefly.
-3. Add new task to the project with task title and status 'Started', 'In Progress', 'Review', 'Completed'.
-4. Delete a task.
-5. Change task title.
-6. set or change task status to either 'Started', 'In Progress', 'Review', 'Completed'.
-7. View all tasks of any one project.
-8. Add or Remove a user to or from a project as a project member.
-6. Assign or Unassign a task to or from the specific project member of the project.
+8. Add new task to the project with task title and status 'Started', 'In Progress', 'Review', 'Completed'.
+9. Delete a task.
+10. Change task title.
+11. set or change task status to either 'Started', 'In Progress', 'Review', 'Completed'.
+12. View all tasks of any one project.
+13. Add or Remove a user to or from a project as a project member.
+14. Assign or Unassign a task to or from the specific project member of the project.
 
 B. Technologies:
 This project follows distributed system approaches where the SCRUM framework is implemented to exercise on distributed system concepts and technologies, agile/iterative and Unified Process SDLC methodology.
