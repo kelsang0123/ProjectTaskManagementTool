@@ -4,4 +4,3 @@ obj/
 
 ### Gitignore file ###
 .env
-.env.backup
