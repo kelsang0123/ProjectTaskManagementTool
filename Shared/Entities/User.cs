@@ -8,16 +8,16 @@ public class User
     {
         
     }
-    public User(String email, String password, String fullName)
+    public User(String firstname, String lastname, String email, String password)
     {
         Email = email;
         Password = password;
-        FullName = fullName;
+        FirstName = firstname;
+        LastName = lastname;
     }
 public int Id{get; set;}
 public String Email{get; set;}
 public String Password{get; set;}
-public String FullName{get; set;}
-public List<Project> Projects{get; set;}
-public List<ProjectMember> ProjectMembers{get; set;}
+public String FirstName{get; set;}
+public String LastName{get; set;}
 }

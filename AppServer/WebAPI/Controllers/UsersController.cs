@@ -20,17 +20,51 @@ namespace WebAPI.Controllers
         [HttpPost("createUser")]
         public async Task<ActionResult<UserDto>> AddUser([FromBody] CreateUserDto request)
         {
-            await VerifyUserNameIsAvailable(request.Username);
-            DateTime dateTime = DateTime.Now;
-            User user = new(request.Username, request.Password, request.FullName);
+            await VerifyEmailExists(request.Email);
+            await VerifyEmailFormat(request.Email);
+            await VerifyPasswordStrength(request.Password);
+            User user = new(request.FirstName, request.LastName,request.Email, request.Password);
             User created = await userRepo.AddAsync(user);
             UserDto dto = new()
             {
                 Id = created.Id,
-                Email = created.Email,
-                FullName = created.FullName
+                FirstName = created.FirstName,
+                LastName = created.LastName,
+                Email = created.Email
             };
             return Created($"/users/{dto.Id}", created);
+        }
+
+        private async Task VerifyPasswordStrength(string password)
+        {
+            if(password.Length < 8)
+            {
+                throw new FormatException($"Password, {password} is not strong enough! It must be at least 8 characters long.");
+            }
+            else if(!password.Any(char.IsUpper))
+            {
+                throw new FormatException($"Password, {password} is not strong enough! It must contain at least one uppercase letter.");
+            }
+            else if(!password.Any(char.IsLower))
+            {
+                throw new FormatException($"Password, {password} is not strong enough! It must contain at least one lowercase letter.");
+            }
+            else if(!password.Any(char.IsDigit))
+            {
+                throw new FormatException($"Password, {password} is not strong enough! It must contain at least one digit.");
+            }
+            else if(!password.Any(ch => !char.IsLetterOrDigit(ch)))
+            {
+                throw new FormatException($"Password, {password} is not strong enough! It must contain at least one special character.");
+            }
+        }
+
+        private async Task VerifyEmailFormat(string email)
+        {
+          if(!(email.Contains("@") && email.Contains(".com")))
+            {
+              throw new FormatException($"Email, {email} is not in a valid format!");
+            }
         }
 
         [HttpGet("{UserId:int}/getSingleUser")]
@@ -42,8 +76,9 @@ namespace WebAPI.Controllers
          UserDto dto = new()
          {
              Id = user.Id,
-             Email = user.Email,
-             FullName = user.FullName
+             FirstName = user.FirstName,
+             LastName = user.LastName,
+             Email = user.Email
          };
          return Results.Ok(dto);
         }
@@ -51,13 +86,23 @@ namespace WebAPI.Controllers
         [HttpGet("manyUsers")]
         public async Task<IResult> GetUsers(
             [FromQuery] string? email = null,
-            [FromQuery] int? userId = null            
+            [FromQuery] int? userId = null,
+            [FromQuery] string? firstName = null,
+            [FromQuery] string? lastName = null        
           ) 
         {
             IQueryable<User> queryableUsers = userRepo.GetMany();
             if(email!=null)
             {
                 queryableUsers = queryableUsers.Where(u=>u.Email.Contains(email));
+            }
+            if(firstName != null)
+            {
+                queryableUsers = queryableUsers.Where(u=>u.FirstName.Contains(firstName));
+            }
+            if(lastName != null)
+            {
+                queryableUsers = queryableUsers.Where(u=>u.LastName.Contains(lastName));
             }
             if(userId != null)
             {
@@ -67,8 +112,9 @@ namespace WebAPI.Controllers
             List<UserDto> users = queryableUsers.Select(user => new UserDto
             {
                 Id = user.Id,
-                Email = user.Email,
-                FullName = user.FullName
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
             })
             .ToList();
             return Results.Ok(users);
@@ -80,13 +126,13 @@ namespace WebAPI.Controllers
            await userRepo.DeleteAsync(userId);
            return NoContent();
         }
-        private async Task VerifyUserNameIsAvailable(string email)
+        private async Task VerifyEmailExists(string email)
         {
             List<User> users = userRepo.GetMany().AsQueryable().ToList();
             User? existingUser = users.SingleOrDefault(u=>u.Email == email);
             if(existingUser!=null)
             {
-                throw new KeyNotFoundException("Username already exists!");
+                throw new KeyNotFoundException($"User account with email, {email} already exists!");
             }
         }
        
