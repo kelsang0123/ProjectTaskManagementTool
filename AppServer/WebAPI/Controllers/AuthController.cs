@@ -29,8 +29,9 @@ namespace WebAPI.Controllers
                     User = new UserDto
                     {
                         Id = user.Id,
-                        Email = user.Email,
-                        FullName = user.FullName
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email
                     }
                 };
                 return Ok(response);
@@ -72,8 +73,8 @@ namespace WebAPI.Controllers
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
             new Claim("Email", user.Email),
-            new Claim("Fullname", user.FullName),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
         return [.. claims];
