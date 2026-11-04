@@ -12,6 +12,8 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainBackendServer
 {
@@ -30,7 +32,29 @@ public class MainBackendServer
   {
     int port = 7892;
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("projectPU");
+    String dbUser = System.getenv("POSTGRES_USER");
+    String dbPassword = System.getenv("POSTGRES_PASSWORD");
+
+    if (dbUser == null || dbPassword == null) {
+      throw new IllegalStateException(
+          "POSTGRES_USER or POSTGRES_PASSWORD environment variable is missing!"
+      );
+    }
+
+    Map<String, Object> properties = new HashMap<>();
+
+    properties.put(
+        "jakarta.persistence.jdbc.user",
+        dbUser
+    );
+
+    properties.put(
+        "jakarta.persistence.jdbc.password",
+        dbPassword
+    );
+
+    EntityManagerFactory emf =
+        Persistence.createEntityManagerFactory("projectPU", properties);
 
     ProjectRepository projectRepo = new ProjectRepositoryImpl(emf);
 
